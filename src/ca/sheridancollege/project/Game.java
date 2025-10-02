@@ -48,7 +48,7 @@ public abstract class Game {
     /**
      * Play the game. This might be one method or many method calls depending on your game.
      */
-    public abstract void play();
+    public abstract void play();//black jack, uno, war 
 
     /**
      * When the game is over, use this method to declare and display a winning player.
