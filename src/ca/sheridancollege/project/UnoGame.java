@@ -6,7 +6,7 @@ package ca.sheridancollege.project;
 
 /**
  *
- * @author Halaa
+ * 
  */
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ public class UnoGame extends Game{
     private int direction; // 1 = clockwise, -1 = counter-clockwise
     private Color currentColor;
     private Player winner;
+    private int turnNumber;
 
     public UnoGame(String name) {
         super(name);
@@ -36,23 +37,44 @@ public class UnoGame extends Game{
      */
     public void setUp() {
 
-        Color[] colours = {Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE};
+    Color[] colours = {Color.RED, Color.YELLOW, Color.GREEN, Color.BLUE};
 
-        for (Color c : colours) {
-            for (Rank r : Rank.values()) {
-                if (r == Rank.WILD || r == Rank.WILD_DRAW_FOUR) {
-                    continue;
-                }
-                drawPile.addCard(new UnoCard(c, r));
-            }
-        }
+// Build full UNO deck
 
-        for (int i = 0; i < 4; i++) {
-            drawPile.addCard(new UnoCard(Color.WILD, Rank.WILD));
-            drawPile.addCard(new UnoCard(Color.WILD, Rank.WILD_DRAW_FOUR));
-        }
+for (Color c : colours) {
 
-        drawPile.shuffle();
+    // ZERO appears once per colour
+    drawPile.addCard(new UnoCard(c, Rank.ZERO));
+
+    // Numbers 1–9 appear twice per colour
+    Rank[] numberRanks = {
+        Rank.ONE, Rank.TWO, Rank.THREE, Rank.FOUR, Rank.FIVE,
+        Rank.SIX, Rank.SEVEN, Rank.EIGHT, Rank.NINE
+    };
+
+    for (Rank r : numberRanks) {
+        drawPile.addCard(new UnoCard(c, r));
+        drawPile.addCard(new UnoCard(c, r));
+    }
+
+    // Action cards (Skip, Reverse, Draw Two) appear twice per colour
+    Rank[] actionRanks = {Rank.SKIP, Rank.REVERSE, Rank.DRAW_TWO};
+
+    for (Rank r : actionRanks) {
+        drawPile.addCard(new UnoCard(c, r));
+        drawPile.addCard(new UnoCard(c, r));
+    }
+}
+
+// Wild cards (4 of each)
+for (int i = 0; i < 4; i++) {
+    drawPile.addCard(new UnoCard(Color.WILD, Rank.WILD));
+    drawPile.addCard(new UnoCard(Color.WILD, Rank.WILD_DRAW_FOUR));
+}
+
+// Shuffle after building the full deck
+drawPile.shuffle();
+
 
         for (Player p : getPlayers()) {
             UnoPlayer up = (UnoPlayer) p;
@@ -70,18 +92,24 @@ public class UnoGame extends Game{
         currentIndex = 0;
         direction = 1;
         winner = null;
+        turnNumber = 1;
     }
 
     @Override
     public void play() {
-        setUp();
-        System.out.println("Starting UNO game: " + getName());
+      setUp();
+    System.out.println("Starting UNO game: " + getName());
 
-        while (!isRoundOver()) {
-            playTurn();
-        }
+    int maxTurns = 100; // for demo only
+    //int turnNumber = 1;
 
-        declareWinner();
+    while (!isRoundOver() && turnNumber <= maxTurns) {
+        System.out.println("\n----- TURN " + turnNumber + " -----");
+        playTurn();
+        turnNumber++;
+    }
+
+    declareWinner();
     }
 
     @Override
@@ -93,9 +121,7 @@ public class UnoGame extends Game{
         }
     }
 
-    /**
-     * Play a single turn for the current player.
-     */
+ 
     public void playTurn() {
 
         List<Player> players = getPlayers();
@@ -104,6 +130,12 @@ public class UnoGame extends Game{
 
         ArrayList<Card> discardCards = discardPile.getCards();
         UnoCard topCard = (UnoCard) discardCards.get(discardCards.size() - 1);
+
+         System.out.println();
+         System.out.println("----- TURN " + turnNumber + " -----");
+         System.out.println("Top card : " + topCard);
+         System.out.println("Current colour : " + currentColor);
+         System.out.println("Current player: " + currentPlayer.getName());
 
         UnoCard chosenCard = null;
         for (Card c : hand.getCards()) {
@@ -141,6 +173,7 @@ public class UnoGame extends Game{
         }
 
         moveToNextPlayer();
+        turnNumber++;
     }
 
     /**
@@ -231,4 +264,5 @@ public class UnoGame extends Game{
 
         System.out.println("Current colour is now: " + currentColor);
     }
+
 }

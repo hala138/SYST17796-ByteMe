@@ -15,7 +15,8 @@ public class UnoPlayer extends Player{
 
     public UnoPlayer(String name) {
         super(name);
-        // hand will be set later by the game setup
+         this.hasSaidUno = false;
+        
     }
 
     public GroupOfCards getHand() {
@@ -31,10 +32,7 @@ public class UnoPlayer extends Player{
     public void setHasSaidUno(boolean hasSaidUno){
         this.hasSaidUno=hasSaidUno;
     }
-    /**
-     * The player says UNO when they have one card left.
-     * For now we just print a message.
-     */
+   
     public void sayUno() {
         if (!hasSaidUno){
         System.out.println(getName() + " says UNO!");
@@ -42,15 +40,11 @@ public class UnoPlayer extends Player{
         }
     }
 
-    /**
-     * Simple implementation of play.
-     * The actual turn logic will be handled by UnoGame.
-     */
+  
     @Override
     public void play() {
-        // In this design, UnoGame controls the turn flow,
        
-        System.out.println(getName() + " is taking a turn.");
+        
     }
   
 

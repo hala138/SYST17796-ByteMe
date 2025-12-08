@@ -19,8 +19,8 @@ public class UnoGameDriver {
         ArrayList<Player> players = new ArrayList<>();
         players.add(new UnoPlayer("Player 1"));
         players.add(new UnoPlayer("Player 2"));
-        players.add(new UnoPlayer("Player 3"));
-        players.add(new UnoPlayer("Player 4"));
+        //players.add(new UnoPlayer("Player 3"));
+        //players.add(new UnoPlayer("Player 4"));
 
         game.setPlayers(players);
 

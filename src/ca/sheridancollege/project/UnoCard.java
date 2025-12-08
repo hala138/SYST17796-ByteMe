@@ -33,24 +33,27 @@ public class UnoCard extends Card {
         this.rank = rank;
     }
 
-    /**
-     * Check if this card can be played on top of another card.
-     *
-     * @param topCard the card on the discard pile
-     * @return true if this card is playable on that card
-     */
+  
     public boolean isPlayableOn(UnoCard topCard) {
-        // Wild cards can always be played
-        if (this.rank == Rank.WILD || this.rank == Rank.WILD_DRAW_FOUR) {
+        if (this.rank == Rank.WILD 
+                || this.rank == Rank.WILD_DRAW_FOUR) {
             return true;
         }
 
-        // Same colour or same rank
-        return this.color == topCard.color || this.rank == topCard.rank;
+        return this.color == topCard.color 
+                || this.rank == topCard.rank 
+                || this.color == color.WILD;
     }
 
     @Override
     public String toString() {
+        if (rank == Rank.WILD){
+            return "WILD";
+        }else if (rank == Rank.WILD_DRAW_FOUR){
+            return "WILD DRAW FOUR";
+        }else{
+             
         return color + " " + rank;
     }
+ }
 }
